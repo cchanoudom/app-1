@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuties Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f9e2e2, #e0f7fa);
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        }
+        .cute-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cute-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .cute-button {
+            background: #ff9ff3;
+            transition: background 0.3s ease;
+        }
+        .cute-button:hover {
+            background: #ff6bd6;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav class="bg-pink-300 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">Cuties Dashboard</h1>
+            <div class="space-x-4">
+                <button class="cute-button text-white px-4 py-2 rounded-full">Home</button>
+                <button class="cute-button text-white px-4 py-2 rounded-full">Pets</button>
+                <button class="cute-button text-white px-4 py-2 rounded-full">Stats</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-1">
+        <h2 class="text-3xl font-semibold text-pink-600 mb-6">Welcome to Your Cute Dashboard! 🐾</h2>
+        
+        <!-- Cards Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="cute-card bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
+                <img src="https://via.placeholder.com/80?text=🐶" alt="Puppy" class="rounded-full">
+                <div>
+                    <h3 class="text-lg font-bold text-pink-500">Puppy Count</h3>
+                    <p class="text-gray-600">Total: <span id="puppy-count">42</span></p>
+                </div>
+            </div>
+            <div class="cute-card bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
+                <img src="https://via.placeholder.com/80?text=😺" alt="Kitten" class="rounded-full">
+                <div>
+                    <h3 class="text-lg font-bold text-pink-500">Kitten Count</h3>
+                    <p class="text-gray-600">Total: <span id="kitten-count">35</span></p>
+                </div>
+            </div>
+            <div class="cute-card bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
+                <img src="https://via.placeholder.com/80?text=🐰" alt="Bunny" class="rounded-full">
+                <div>
+                    <h3 class="text-lg font-bold text-pink-500">Bunny Count</h3>
+                    <p class="text-gray-600">Total: <span id="bunny-count">28</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold text-pink-500 mb-4">Cuties Growth Over Time</h3>
+            <canvas id="cutiesChart" height="100"></canvas>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-6 text-center">
+            <button id="add-cuties" class="cute-button text-white px-6 py-3 rounded-full text-lg">
+                Add More Cuties! 🎉
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-pink-300 p-4 text-center text-white">
+        <p>&copy; 2025 Cuties Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Initialize Chart.js
+        const ctx = document.getElementById('cutiesChart').getContext('2d');
+        const cutiesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Cuties Growth',
+                    data: [10, 20, 25, 40, 50, 60],
+                    borderColor: '#ff6bd6',
+                    backgroundColor: 'rgba(255, 107, 214, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Cuties'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add interactivity to button
+        const addCutiesButton = document.getElementById('add-cuties');
+        const puppyCount = document.getElementById('puppy-count');
+        const kittenCount = document.getElementById('kitten-count');
+        const bunnyCount = document.getElementById('bunny-count');
+
+        addCutiesButton.addEventListener('click', () => {
+            // Increment counts
+            puppyCount.textContent = parseInt(puppyCount.textContent) + 1;
+            kittenCount.textContent = parseInt(kittenCount.textContent) + 1;
+            bunnyCount.textContent = parseInt(bunnyCount.textContent) + 1;
+
+            // Update chart data
+            cutiesChart.data.datasets[0].data.push(cutiesChart.data.datasets[0].data.slice(-1)[0] + 5);
+            cutiesChart.data.labels.push('');
+            cutiesChart.update();
+        });
+    </script>
+</body>
+</html>
